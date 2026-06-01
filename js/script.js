@@ -12,12 +12,13 @@ const OFTEN_MADE_THRESHOLD = 1;
 
 // 📸 レシピごとの画像パス定義
 const recipeImages = {
-    "カレー": "images/curry.png",
-    "ハンバーグ": "images/hamburg.png",
-    "チーズインハンバーグ": "https://placehold.co/150x100/fff3f3/ffb6b6?text=Cheese+Hamburg",
-    "豆腐ハンバーグ": "https://placehold.co/150x100/fff3f3/ffb6b6?text=Tofu+Hamburg",
-    "シチュー": "https://placehold.co/150x100/fff3f3/ffb6b6?text=Stew",
-    "肉じゃが": "https://placehold.co/150x100/fff3f3/ffb6b6?text=Nikujaga"
+    "カレー": "../img/カレーライス.png",
+    "ハンバーグ": "../img/ハンバーグ.png",
+    "チーズインハンバーグ": "../img/チーズインハンバーグ.png",
+    "豆腐ハンバーグ": "../img/豆腐ハンバーグ.png",
+    "シチュー": "../img/シチュー.png",
+    "肉じゃが": "../img/肉じゃが.png",
+    "オムライス": "../img/オムライス.png"
 };
 
 // ❤️ お気に入り登録されたレシピの名前を管理する配列
@@ -32,8 +33,9 @@ const recipes = {
     "ハンバーグ": ["挽肉", "玉ねぎ", "パン粉", "卵"],
     "チーズインハンバーグ": ["挽肉", "玉ねぎ", "チーズ", "パン粉", "卵"],
     "豆腐ハンバーグ": ["挽肉", "豆腐", "玉ねぎ", "パン粉"],
-    "シチュー": ["鶏肉", "じゃがいも", "にんじん", "シチュールー"],
-    "肉じゃが": ["牛肉", "じゃがいも", "にんじん", "糸こんにゃく"]
+    "シチュー": ["鶏肉", "じゃがいも", "にんじん", "玉ねぎ", "ブロッコリー", "牛乳", "シチュールー"],
+    "肉じゃが": ["牛肉", "じゃがいも", "にんじん", "糸こんにゃく"],
+    "オムライス": ["卵", "鶏肉", "玉ねぎ", "ごはん", "ケチャップ"]
 };
 
 let currentRecipe = { name: "", ingredients: [] };
@@ -42,12 +44,12 @@ let currentShoppingMemoId = null;
 // 🌟 自由入力での新規リスト作成用のテンポラリデータ
 let newListIngredients = [];
 
-// 🥦 冷蔵庫の在庫データ
+// 冷蔵庫の在庫データ
 let fridgeStocks = {
     "玉ねぎ": false, "じゃがいも": false, "にんじん": false, "キャベツ": false, "豚肉": false, "挽肉": false, "卵": false
 };
 
-// 🥦 カテゴリーごとの食材マスター
+// カテゴリーごとの食材マスター
 const fridgeCategories = {
     "野菜": ["玉ねぎ", "じゃがいも", "にんじん", "キャベツ"],
     "肉・魚": ["豚肉", "牛肉", "挽肉", "鶏肉"],
@@ -58,15 +60,21 @@ const fridgeCategories = {
 let currentFridgeCategory = "野菜";
 
 // 🍲 レシピのカテゴリ分けマスターデータ
+// 🍲 新しいカテゴリ名に合わせて料理を配置する
 const recipesByCategory = {
-    "主食": ["カレー"],
-    "主菜": ["ハンバーグ", "チーズインハンバーグ", "豆腐ハンバーグ", "肉じゃが"],
-    "副菜": [], 
-    "スープ": ["シチュー"]
+    "ごはんもの": ["カレー", "オムライス"],
+    "麺類": [],
+    "スープ": ["シチュー"],
+    "肉・魚料理": ["ハンバーグ", "チーズインハンバーグ", "肉じゃが"],
+    "おかず": ["豆腐ハンバーグ",],
+    "サラダ": [],
+    "パン・ピザ": [],
+    "デザート": [],
+    "その他": []
 };
 
 const recipeCategoryIcons = {
-    "主食": "🍚", "主菜": "🍳", "副菜": "🥗", "スープ": "🥣"
+    "ごはんもの": "🍚", "麺類": "🍜", "スープ": "🥣", "肉・魚料理": "🥩", "おかず": "🍳", "サラダ": "🥗", "パン・ピザ": "🍞", "デザート": "🍓", "その他": "🍲"
 };
 
 let currentRecipeCategory = null;
@@ -114,7 +122,7 @@ const pages = {
             memoSectionHtml = `
                 <section>
                     <div class="section-title"><h2>最近のメモ</h2></div>
-                    <div style="text-align: center; padding: 20px 0;">
+                    <div style="text-align: center;">
                         <p style="color: #888; margin-bottom: 15px;">買い物リストを作ろう。</p>
                         <button class="btn-primary" onclick="router('recipeList')">買い物リストを作る</button>
                     </div>
@@ -139,8 +147,15 @@ const pages = {
 
         return `
             <header>
-                <div class="header-top"><h1>ストッカ</h1></div>
-                <p>買い物を、もっとかんたんに。</p>
+                <div class="menu-profile-header">
+                    <div class="menu-avatar">
+                        <img src="./img/logo.png" alt="">
+                    </div>
+                    <div class="menu-header-text">
+                        <h2>stocca.</h2>
+                        <p>買い物を、もっとかんたんに。</p>
+                    </div>
+                </div>
                 <div class="search-container">
                     <input type="text" id="search-input" class="search-box" placeholder="🔍 作りたい料理を検索" oninput="handleSearch(this.value)">
                     <div id="search-suggestions" class="suggestions-list"></div>
@@ -148,8 +163,20 @@ const pages = {
             </header>
             ${recipeSectionHtml}
             <section class="navigation-boxes" style="display:flex; gap:10px; margin:20px 0;">
-                <div class="box" style="background:#fff0f0; padding:15px; border-radius:15px; flex:1; cursor:pointer;" onclick="router('shopping')">🛒 買い物リスト</div>
-                <div class="box" style="background:#f0f7f0; padding:15px; border-radius:15px; flex:1; cursor:pointer;" onclick="router('fridge')">🥦 冷蔵庫メモ</div>
+                <div class="box" style="background:#fff0f0; border-radius:15px; cursor:pointer;" onclick="router('shopping')">
+                    <img src = "../img/cart_icon.png" alt="">
+                    <div>
+                        <h3>買い物リスト</h3>
+                        <p>リストを確認</p>
+                    </div>
+                </div>
+                <div class="box" style="background:#f0f7f0; border-radius:15px; flex:1; cursor:pointer;" onclick="router('fridge')">
+                <img src = "../img/refrigerator_icon.png" alt="">
+                    <div>
+                        <h3>冷蔵庫メモ</h3>
+                        <p>あるものを確認</p>
+                    </div>
+                </div>
             </section>
             ${memoSectionHtml}`;
     },
@@ -193,7 +220,7 @@ const pages = {
                 ${popularRecipes.map(name => generateRecipeCardHtml(name)).join('')}
             </div>`;
 
-        const categories = ["主食", "主菜", "副菜", "スープ"];
+        const categories = ["ごはんもの", "麺類", "スープ", "肉・魚料理", "おかず", "サラダ", "パン・ピザ", "デザート", "その他"];
         const categoryTilesHtml = categories.map(cat => {
             const icon = recipeCategoryIcons[cat] || "🍔";
             return `
@@ -205,9 +232,12 @@ const pages = {
 
         return `
             <h2>レシピを選ぶ</h2>
-            
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-box" placeholder="🔍 作りたい料理を検索" oninput="handleSearch(this.value)">
+                <div id="search-suggestions" class="suggestions-list"></div>
+            </div>
             <section class="recipe-section-group">
-                <h3 class="recipe-section-title">よく作る料理</h3>
+                <h3 class="recipe-section-title">よく作るレシピ</h3>
                 ${oftenSectionHtml}
             </section>
             
@@ -239,7 +269,7 @@ const pages = {
                 </span>
             </div>
             
-            <div class="recipe-illustration-box" style="padding:0; overflow:hidden;">
+            <div class="recipe-illustration-box" style="padding:0;">
                 <img src="${imgSrc}" alt="${currentRecipe.name}" style="width:100%; height:100%; object-fit: cover;">
             </div>
 
@@ -367,53 +397,55 @@ const pages = {
     menu: () => {
         return `
             <div class="menu-profile-header">
-                <div class="menu-avatar">🍲</div>
+                <div class="menu-avatar">
+                    <img src="./img/logo.png" alt="">
+                </div>
                 <div class="menu-header-text">
-                    <h2>ストッカ</h2>
+                    <h2>stocca.</h2>
                     <p>買い物を、もっとかんたんに。</p>
                 </div>
             </div>
 
             <div class="menu-list-card">
                 <div class="menu-item" onclick="router('fridge')">
-                    <div class="menu-item-left">📋 <span>冷蔵庫メモ</span></div>
+                    <div class="menu-item-left"><img src="../img/refrigerator_icon.png" alt=""><span>冷蔵庫メモ</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
                 <div class="menu-item" onclick="showToast('食材カテゴリの管理は準備中です')">
-                    <div class="menu-item-left">🏠 <span>食材カテゴリの管理</span></div>
+                    <div class="menu-item-left"><img src="../img/food_icon.png" alt=""><span>食材カテゴリの管理</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
                 <div class="menu-item" onclick="showToast('よく使うレシピの管理は準備中です')">
-                    <div class="menu-item-left">🐶 <span>よく使うレシピの管理</span></div>
+                    <div class="menu-item-left"><img src="../img/recipe_icon.png" alt=""><span>よく使うレシピの管理</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
                 <div class="menu-item" onclick="showToast('データのバックアップは準備中です')">
-                    <div class="menu-item-left">💾 <span>データのバックアップ</span></div>
+                    <div class="menu-item-left"><img src="../img/backup_icon.png" alt=""><span>データのバックアップ</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
             </div>
 
             <div class="menu-list-card">
                 <div class="menu-item" onclick="router('guide')">
-                    <div class="menu-item-left">💬 <span>使い方ガイド</span></div>
+                    <div class="menu-item-left"><img src="../img/howto_icon.png" alt=""><span>使い方ガイド</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
                 <div class="menu-item" onclick="router('contact')">
-                    <div class="menu-item-left">✉ <span>お問い合わせ</span></div>
+                    <div class="menu-item-left"><img src="../img/mail_icon.png" alt=""><span>お問い合わせ</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
                 <div class="menu-item" onclick="router('privacy')">
-                    <div class="menu-item-left">🔒 <span>プライバシーポリシー</span></div>
+                    <div class="menu-item-left"><img src="../img/lock_icon.png" alt=""><span>プライバシーポリシー</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
             </div>
 
             <div class="menu-footer-illustration">
-                <div class="footer-cat-emoji">🐱💖</div>
+                <div class="footer-cat-emoji">
+                    <img src="../img/cat.png" alt="">
+                </div>
                 <div class="footer-message">
-                    ストッカで、<br>
-                    毎日のお買い物を<br>
-                    もっとラクに♪
+                    今日は何を作ろう？
                 </div>
             </div>
         `;
@@ -446,13 +478,12 @@ const pages = {
             <div class="extra-ingredients-card" style="background: #fff0f0; border: none; padding: 15px; border-radius: 20px; text-align: center;">
                 <p style="font-size: 12px; color: #f58f8f; font-weight: bold; margin: 0;">
                     💡 お気に入り機能<br>
-                    レシピの右上にあるハートをタップすると、よく作る料理にすばやくアクセスできるようになります！
+                    レシピの右上にあるハートをタップすると、よく作るレシピにすばやくアクセスできるようになります！
                 </p>
             </div>
         `;
     },
 
-    // 🌟 🌟 🌟 新規追加：自由入力のリスト作成画面 🌟 🌟 🌟
     createList: () => {
         return `
             <div class="recipe-detail-header" style="margin-bottom: 15px;">
@@ -461,10 +492,10 @@ const pages = {
             </div>
 
             <div class="extra-ingredients-card" style="background:#fff; border:none; padding:15px; border-radius:20px; margin-bottom:15px;">
-                <label style="font-size:13px; color:#666; font-weight:bold; display:block; margin-bottom:5px;">📋 メモのタイトル</label>
+                <label style="font-size:13px; color:#666; font-weight:bold; display:block; margin-bottom:5px;">メモのタイトル</label>
                 <input type="text" id="custom-list-title" placeholder="例）週末のまとめ買い、日用品など" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:10px; box-sizing:border-box; margin-bottom:15px;">
 
-                <label style="font-size:13px; color:#666; font-weight:bold; display:block; margin-bottom:5px;">🥕 食材の追加</label>
+                <label style="font-size:13px; color:#666; font-weight:bold; display:block; margin-bottom:5px;">食材の追加</label>
                 <div class="extra-input-row" style="display:flex; gap:8px;">
                     <input type="text" id="custom-list-item-input" placeholder="例）トマト、牛乳など" style="flex:1;">
                     <button class="btn-add-extra" onclick="addIngredientToCustomList()" style="white-space:nowrap;">＋ 追加</button>
@@ -473,8 +504,7 @@ const pages = {
 
             <div class="ingredients-section-card" style="background:#fff; border-radius:20px; padding:15px; min-height:150px; margin-bottom:80px;">
                 <h3 style="margin-top:0; font-size:14px; color:#333; border-bottom:1px solid #eee; padding-bottom:8px;">追加した食材一覧</h3>
-                <div id="custom-list-items-container">
-                    </div>
+                <div id="custom-list-items-container"></div>
             </div>
 
             <div class="recipe-bottom-bar" style="justify-content: center; padding: 10px 20px;">
@@ -493,7 +523,7 @@ const pages = {
             <div class="privacy-content-card">
                 <p class="privacy-date">制定日：2026年6月1日</p>
                 <h3>1. 個人情報の収集について</h3>
-                <p>当アプリ（ストッカ）は、ユーザーの氏名、メールアドレス、電話番号などの個人情報を一切収集いたしません。</p>
+                <p>当アプリ（stocca.）は、ユーザーの氏名、メールアドレス、電話番号などの個人情報を一切収集いたしません。</p>
                 <h3>2. データの保存先について</h3>
                 <p>ユーザーが入力したレシピデータ、買い物メモ、冷蔵庫の在庫データは、すべてユーザーがご使用のスマートフォン端末内（ローカルストレージ等）にのみ保存されます。</p>
                 <h3>3. 免責事項</h3>
@@ -512,7 +542,7 @@ const pages = {
             </div>
 
             <div class="contact-content-card">
-                <p>当アプリ「ストッカ」をご利用いただきありがとうございます！</p>
+                <p>当アプリ「stocca.」をご利用いただきありがとうございます！</p>
                 <div class="contact-account-box">
                     <span class="x-badge">X (旧Twitter)</span>
                     <strong class="x-username">@JwfrlL</strong>
@@ -535,7 +565,7 @@ function router(pageName) {
         app.innerHTML = typeof pages[pageName] === 'function' ? pages[pageName]() : pages[pageName];
         if (pageName === 'recipeDetail') renderRecipeDetail();
         if (pageName === 'fridge') renderFridgeList();
-        if (pageName === 'createList') renderCustomListItems(); // 🌟 追加
+        if (pageName === 'createList') renderCustomListItems();
         
         updateBottomNav(pageName);
         app.style.opacity = "1";
@@ -666,7 +696,6 @@ function addNewFridgeItem() {
     }
 }
 
-// 最終確認
 function renderConfirm() {
     const app = document.getElementById('app');
     const buy = currentRecipe.ingredients.filter(i => i.status === "needed");
@@ -680,13 +709,18 @@ function renderConfirm() {
         <button class="btn-primary" onclick="saveToShoppingList()">リストを保存する</button>`;
 }
 
+// 料理名（currentRecipe.name）だけをシンプルに入れるように変更
 function saveToShoppingList() {
     const buyIngredients = currentRecipe.ingredients.filter(i => i.status === "needed");
-    const buyTitles = buyIngredients.map(i => i.name).join(', ');
     const checkList = buyIngredients.map(i => ({ name: i.name, checked: false }));
 
     shoppingMemos.unshift({ 
-        id: Date.now(), recipeName: currentRecipe.name, title: currentRecipe.name + ": " + (buyTitles || "追加食材など"), date: new Date().toLocaleDateString(), status: "active", ingredients: checkList
+        id: Date.now(), 
+        recipeName: currentRecipe.name, 
+        title: currentRecipe.name, // 料理名だけを表示
+        date: new Date().toLocaleDateString(), 
+        status: "active", 
+        ingredients: checkList
     });
     showToast("📝 リストを保存しました");
     router('shopping');
@@ -751,41 +785,30 @@ function updateBottomNav(pageName) {
     if (pageName === 'shoppingDetail') activePage = 'shopping';
     if (pageName === 'fridge') activePage = 'home';
     if (pageName === 'menu' || pageName === 'privacy' || pageName === 'contact' || pageName === 'guide') activePage = 'menu';
-    if (pageName === 'createList') activePage = ''; // ＋ボタン画面の時はどこもアクティブにしない（または独立させる）
+    if (pageName === 'createList') activePage = '';
 
     navButtons.forEach(btn => {
         const page = btn.getAttribute('data-page');
-        const iconEl = btn.querySelector('.nav-icon');
-        if (!iconEl) return;
         
+        // 🌟 文字列の書き換え処理を廃止し、activeクラスの付与・剥奪のみに集約
         if (page === activePage) {
             btn.classList.add('active');
-            if (page === 'home') iconEl.innerText = '🏡';
-            if (page === 'recipeList') iconEl.innerText = '💝';
-            if (page === 'shopping') iconEl.innerText = '🛍️';
-            if (page === 'menu') iconEl.innerText = '❌'; 
         } else {
             btn.classList.remove('active');
-            if (page === 'home') iconEl.innerText = '🏠';
-            if (page === 'recipeList') iconEl.innerText = '🍲';
-            if (page === 'shopping') iconEl.innerText = '🛒';
-            if (page === 'menu') iconEl.innerText = '≡';
         }
     });
 }
 
 
 // ==========================================
-// 🌟 🌟 🌟 新規追加：自由入力リスト作成のロジック 🌟 🌟 🌟
+// 自由入力リスト作成のロジック
 // ==========================================
 
-// 下部メニューやFABの「＋」が押されたときの処理を「リスト作成画面への遷移」に変更
 function addList() {
-    newListIngredients = []; // データを初期化
+    newListIngredients = [];
     router('createList');
 }
 
-// 自由入力画面でリストに食材を一時追加する
 function addIngredientToCustomList() {
     const input = document.getElementById('custom-list-item-input');
     const val = input ? input.value.trim() : "";
@@ -802,7 +825,6 @@ function addIngredientToCustomList() {
     }
 }
 
-// 一時追加された食材の一覧を描画する
 function renderCustomListItems() {
     const container = document.getElementById('custom-list-items-container');
     if (!container) return;
@@ -823,7 +845,6 @@ function renderCustomListItems() {
     `).join('');
 }
 
-// リストから食材を1つ削除する
 function removeIngredientFromCustomList(index) {
     const removedName = newListIngredients[index];
     newListIngredients.splice(index, 1);
@@ -831,7 +852,6 @@ function removeIngredientFromCustomList(index) {
     renderCustomListItems();
 }
 
-// 自由入力で作ったリスト全体を買い物メモに保存する
 function saveCustomShoppingList() {
     const titleInput = document.getElementById('custom-list-title');
     let titleVal = titleInput ? titleInput.value.trim() : "";
@@ -841,7 +861,6 @@ function saveCustomShoppingList() {
         return;
     }
 
-    // タイトルが未入力の場合は自動生成
     if (!titleVal) {
         titleVal = "自由メモ: " + newListIngredients.slice(0, 2).join(', ');
         if (newListIngredients.length > 2) titleVal += " など";
