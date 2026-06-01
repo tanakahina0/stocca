@@ -3,36 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ストッカ | Stocca</title>
+    <title>stocca. | Stocca</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <div id="desktop-message">
-        <h1>ストッカ</h1>
+        <div class="desktop-top">
+            <img src="./img/logo.png" alt="">
+            <h1>stocca.</h1>
+        </div>
         <p>当サービスはスマートフォン専用です。</p>
     </div>
     
     <div id="app" class="app-container"></div>
-    
     <div id="custom-modal" class="modal-overlay"></div>
     
     <div id="toast" class="toast-container"></div>
 
     <nav class="bottom-nav">
         <button class="nav-btn" data-page="home" onclick="router('home')">
-            <span class="nav-icon">🏠</span><br>ホーム
+            <div class="nav-icon-wrapper home-icon"></div>
+            <span class="nav-label">ホーム</span>
         </button>
         <button class="nav-btn" data-page="recipeList" onclick="router('recipeList')">
-            <span class="nav-icon">🍲</span><br>レシピ
+            <div class="nav-icon-wrapper recipe-icon"></div>
+            <span class="nav-label">レシピ</span>
         </button>
         
-        <button class="fab-nav" onclick="addList()"><div class="plus-icon"></div></button>
+        <button class="fab-nav" onclick="addList()">
+            <div class="plus-icon"></div>
+        </button>
         
         <button class="nav-btn" data-page="shopping" onclick="router('shopping')">
-            <span class="nav-icon">🛒</span><br>買い物
+            <div class="nav-icon-wrapper shopping-icon"></div>
+            <span class="nav-label">買い物</span>
         </button>
         <button class="nav-btn" data-page="menu" onclick="router('menu')">
-            <span class="nav-icon">≡</span><br>メニュー
+            <div class="nav-icon-wrapper menu-hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span class="nav-label">メニュー</span>
         </button>
     </nav>
     <script src="./js/script.js"></script>
