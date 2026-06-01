@@ -3,8 +3,25 @@ body { font-family: 'Noto Sans JP', sans-serif; background-color: #fdfaf6; color
 .app-container { width: 100%; max-width: 400px; padding: 20px; box-sizing: border-box; transition: opacity 0.3s ease; opacity: 1; }
 
 /* ヘッダー・検索 */
-.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.header-top { display: flex; gap: 12px; align-items: center; margin-bottom: 15px; }
 .search-box { background: white; padding: 12px; border-radius: 25px; border: 1px solid #eee; color: #aaa; display: flex; align-items: center; gap: 10px; }
+.header-top {
+    display: flex;
+    
+    img {
+        width: 80px;
+    }
+}
+
+.desktop-top {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    img {
+        width: 80px;
+    }
+}
 
 /* レシピカード */
 .section-title { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 10px; }
@@ -37,7 +54,7 @@ body { font-family: 'Noto Sans JP', sans-serif; background-color: #fdfaf6; margi
 .app-container { width: 100%; max-width: 400px; padding: 20px; box-sizing: border-box; transition: opacity 0.3s ease; opacity: 1; }
 
 /* 共通コンポーネント */
-.header-top { display: flex; justify-content: space-between; align-items: center; }
+.header-top { display: flex; align-items: center; }
 .search-box { background: white; padding: 12px; border-radius: 25px; border: 1px solid #eee; margin: 15px 0; color: #aaa; }
 .section-title { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 10px; }
 .recipe-cards { display: flex; gap: 10px; overflow-x: auto; }
@@ -71,7 +88,7 @@ body { font-family: 'Noto Sans JP', sans-serif; background-color: #fdfaf6; margi
     position: fixed; top:0; left:0; width:100%; height:100%;
     background: #fdfaf6; z-index: 9999;
     flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 20px;
+    text-align: center;
 }
 
 /* 基本デザイン */
@@ -409,6 +426,12 @@ h2 {
     padding: 20px;
     text-align: center;
     margin-bottom: 15px;
+    height: 375px;
+    max-width: 100%;
+
+    img {
+        border-radius: 25px;
+    }
 }
 .recipe-emoji {
     font-size: 64px;
@@ -647,20 +670,20 @@ h2 {
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 10px 5px;
     margin-bottom: 25px;
 }
 .menu-avatar {
     font-size: 36px;
-    width: 65px;
-    height: 65px;
-    background: #fff0eb;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ffdecb;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+
+    img {
+        width: 100%;
+    }
 }
 .menu-header-text h2 {
     font-size: 20px;
@@ -692,6 +715,10 @@ h2 {
     padding: 15px 0;
     border-bottom: 1px solid #f7f7f7;
     cursor: pointer;
+
+    img {
+        width: 18px;
+    }
 }
 .menu-item:last-child {
     border-bottom: none; /* 最後の行の線は消す */
@@ -715,13 +742,16 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
     margin-top: 35px;
     padding: 10px;
 }
 .footer-cat-emoji {
     font-size: 56px;
     line-height: 1;
+
+    img {
+        width: 150px;
+    }
 }
 .footer-message {
     font-size: 13px;
@@ -965,6 +995,7 @@ h2 {
 .recipe-vertical-card .card-title-area {
     padding: 12px 10px;
     font-size: 13px;
+    height: 100%;
     font-weight: bold;
     color: #444;
     text-align: center;
@@ -986,4 +1017,121 @@ h2 {
     font-size: 13px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     z-index: 2;
+}
+/* --- 🌟 下部メニューの画像・アイコンカスタマイズ --- */
+.bottom-nav .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 6px 0;
+    cursor: pointer;
+}
+
+/* アイコン画像の表示エリア枠 */
+.nav-icon-wrapper {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 4px;
+    transition: transform 0.2s, background-image 0.2s;
+    position: relative;
+}
+
+/* 各メニューごとのデフォルト画像パス（実際の画像名に合わせて適宜変更してください） */
+.home-icon { background-image: url('../img/home_icon.png'); }
+.recipe-icon { background-image: url('../img/recipe_icon.png'); }
+.shopping-icon { background-image: url('../img/cart_icon.png'); }
+
+/* 🌟 アクティブ（選択中）になった時の画像切り替え設定 */
+.nav-btn.active .home-icon { background-image: url('../img/home_icon_active.png'); }
+.nav-btn.active .recipe-icon { background-image: url('../img/recipe_icon_active.png'); }
+.nav-btn.active .shopping-icon { background-image: url('../img/cart_icon_active.png'); }
+
+/* テキストラベルの調整 */
+.nav-label {
+    font-size: 10px;
+    color: #999;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.nav-btn.active .nav-label {
+    color: #ffb6b6; /* アクティブ時のテキスト色 */
+}
+
+/* --- 🍔 メニュー（3本線ハンバーガー）の純CSSスタイリング --- */
+.menu-hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    box-sizing: border-box;
+}
+
+.menu-hamburger-icon span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: #999;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 🌟 メニューがアクティブ（❌）になった時のアニメーション処理 */
+.nav-btn.active .menu-hamburger-icon span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+    background-color: #ffb6b6;
+}
+
+.nav-btn.active .menu-hamburger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-btn.active .menu-hamburger-icon span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+    background-color: #ffb6b6;
+}
+
+.navigation-boxes {
+    .box {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        padding: 16px 6px;
+
+        &:first-child {
+            border: 1px solid #f5adad;
+        }
+
+        &:nth-child(2) {
+            border: 1px solid #91cb91;
+        }
+
+        h3 {
+            font-size: 14px;
+            margin: 0;
+            margin-bottom: 8px;
+        }
+
+        p {
+            font-weight: normal;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        img {
+            width: 50px;
+        }
+    }
+}
+
+.card-img-area {
+    img {
+        width: 200%;
+    }
 }
