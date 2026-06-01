@@ -13,7 +13,7 @@ const OFTEN_MADE_THRESHOLD = 1;
 // 📸 レシピごとの画像パス定義
 const recipeImages = {
     "カレー": "../img/カレーライス.png",
-    "ハンバーグ": "../img/hambarg.png",
+    "ハンバーグ": "../img/ハンバーグ.png",
     "チーズインハンバーグ": "../img/チーズインハンバーグ.png",
     "豆腐ハンバーグ": "../img/豆腐ハンバーグ.png",
     "シチュー": "../img/シチュー.png",
