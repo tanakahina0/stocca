@@ -5,7 +5,7 @@
 // レシピごとの作成回数カウント
 const recipeStats = {
     "カレー": 0, "ハンバーグ": 0, "チーズインハンバーグ": 0,
-    "豆腐ハンバーグ": 0, "シチュー": 0, "肉じゃが": 0
+    "豆腐ハンバーグ": 0, "シチュー": 0, "肉じゃが": 0, "オムライス": 0
 };
 
 const OFTEN_MADE_THRESHOLD = 1;
@@ -66,7 +66,7 @@ const recipesByCategory = {
     "麺類": [],
     "スープ": ["シチュー"],
     "肉・魚料理": ["ハンバーグ", "チーズインハンバーグ", "肉じゃが"],
-    "おかず": ["豆腐ハンバーグ",],
+    "おかず": ["豆腐ハンバーグ"],
     "サラダ": [],
     "パン・ピザ": [],
     "デザート": [],
@@ -92,13 +92,12 @@ function generateRecipeCardHtml(name) {
         <div class="recipe-vertical-card" onclick="openRecipeDetail('${name}')">
             ${heartHtml}
             <div class="card-img-area">
-                <img src="${imgSrc}" alt="${name}" class="recipe-card-thumb" onerror="this.src='https://placehold.co/150x100/fff3f3/ffb6b6?text=No+Image'">
+                <img src="${imgSrc}" alt="${name}" class="recipe-card-thumb" onerror="this.onerror=null; this.src='https://placehold.co/150x100/fff3f3/ffb6b6?text=No+Image'">
             </div>
             <div class="card-title-area">${name}</div>
         </div>
     `;
 }
-
 
 // ==========================================
 // ページ定義（HTMLテンプレート）
