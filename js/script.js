@@ -35,7 +35,22 @@ const recipes = {
     "豆腐ハンバーグ": ["挽肉", "豆腐", "玉ねぎ", "パン粉"],
     "シチュー": ["鶏肉", "じゃがいも", "にんじん", "玉ねぎ", "ブロッコリー", "牛乳", "シチュールー"],
     "肉じゃが": ["牛肉", "じゃがいも", "にんじん", "糸こんにゃく"],
-    "オムライス": ["卵", "鶏肉", "玉ねぎ", "ごはん", "ケチャップ"]
+    "オムライス": ["卵", "鶏肉", "玉ねぎ", "ごはん", "ケチャップ"],
+    "唐揚げ": ["鶏もも肉", "醤油", "酒", "すりおろし生姜", "すりおろしにんにく", "片栗粉", "揚げ油"],
+    "餃子": ["豚挽肉", "キャベツ", "ニラ", "にんにく", "生姜", "餃子の皮", "ごま油"],
+    "麻婆豆腐": ["豆腐", "豚挽肉", "白ネギ", "豆板醤", "甜麺醤", "鶏ガラスープ", "片栗粉"],
+    "生姜焼き": ["豚薄切り肉", "玉ねぎ", "生姜", "醤油", "みりん", "酒", "キャベツ"],
+    "親子丼": ["鶏もも肉", "玉ねぎ", "卵", "ごはん", "出汁", "醤油", "みりん"],
+    "カツ丼": ["豚ロース肉", "卵", "玉ねぎ", "ごはん", "パン粉", "小麦粉", "出汁"],
+    "チャーハン": ["ごはん", "卵", "チャーシュー", "ネギ", "塩胡椒", "醤油", "ごま油"],
+    "カルボナーラ": ["パスタ", "ベーコン", "卵黄", "粉チーズ", "生クリーム", "黒胡椒"],
+    "ミートソース": ["パスタ", "合い挽き肉", "玉ねぎ", "にんじん", "トマト缶", "コンソメ"],
+    "グラタン": ["マカロニ", "鶏肉", "玉ねぎ", "しめじ", "牛乳", "小麦粉", "バター", "ピザ用チーズ"],
+    "お好み焼き": ["キャベツ", "豚バラ肉", "小麦粉", "山芋", "卵", "天かす", "紅生姜"],
+    "たこ焼き": ["タコ", "小麦粉", "卵", "出汁", "キャベツ", "ネギ", "天かす", "紅生姜"],
+    "サバの味噌煮": ["サバ", "生姜", "味噌", "砂糖", "みりん", "酒", "水"],
+    "豚汁": ["豚バラ肉", "大根", "にんじん", "ごぼう", "里芋", "長ネギ", "蒟蒻", "味噌", "出汁"],
+    "ロールキャベツ": ["キャベツ", "合い挽き肉", "玉ねぎ", "パン粉", "卵", "コンソメスープ"]
 };
 
 let currentRecipe = { name: "", ingredients: [] };
@@ -62,19 +77,22 @@ let currentFridgeCategory = "野菜";
 // 🍲 レシピのカテゴリ分けマスターデータ
 // 🍲 新しいカテゴリ名に合わせて料理を配置する
 const recipesByCategory = {
-    "ごはんもの": ["カレー", "オムライス"],
-    "麺類": [],
-    "スープ": ["シチュー"],
-    "肉・魚料理": ["ハンバーグ", "チーズインハンバーグ", "肉じゃが"],
-    "おかず": ["豆腐ハンバーグ"],
-    "サラダ": [],
+    "ご飯もの": ["カレー", "オムライス", "親子丼", "カツ丼", "チャーハン"],
+    "麺類": ["カルボナーラ", "ミートソース"],
     "パン・ピザ": [],
-    "デザート": [],
-    "その他": []
+    "粉もの": ["お好み焼き", "たこ焼き"],
+    "お肉系": ["ハンバーグ", "チーズインハンバーグ", "肉じゃが", "豆腐ハンバーグ", "唐揚げ", "餃子", "麻婆豆腐", "生姜焼き", "ロールキャベツ"],
+    "野菜系": [],
+    "魚系": ["サバの味噌煮"],
+    "オーブン料理": ["グラタン"],
+    "スープ": ["シチュー", "豚汁"],
+    "鍋": [],
+    "サラダ": [],
+    "デザート": []
 };
 
 const recipeCategoryIcons = {
-    "ごはんもの": "🍚", "麺類": "🍜", "スープ": "🥣", "肉・魚料理": "🥩", "おかず": "🍳", "サラダ": "🥗", "パン・ピザ": "🍞", "デザート": "🍓", "その他": "🍲"
+    "ご飯もの": "🍚", "麺類": "🍜", "パン・ピザ": "🍕", "お肉系": "🥩", "野菜系": "🥕", "魚系": "🐟", "スープ": "🥣", "鍋": "🍲", "サラダ": "🥗", "デザート": "🍓"
 };
 
 let currentRecipeCategory = null;
@@ -147,12 +165,12 @@ const pages = {
         return `
             <header>
                 <div class="menu-profile-header">
+                    <div class="menu-header-text">
+                        <h1>stocca<span>.</span></h1>
+                        <p>買い物を、もっとかんたんに。</p>
+                    </div>
                     <div class="menu-avatar">
                         <img src="./img/logo.png" alt="">
-                    </div>
-                    <div class="menu-header-text">
-                        <h2>stocca.</h2>
-                        <p>買い物を、もっとかんたんに。</p>
                     </div>
                 </div>
                 <div class="search-container">
@@ -162,19 +180,31 @@ const pages = {
             </header>
             ${recipeSectionHtml}
             <section class="navigation-boxes" style="display:flex; gap:10px; margin:20px 0;">
-                <div class="box" style="background:#fff0f0; border-radius:15px; cursor:pointer;" onclick="router('shopping')">
-                    <img src = "../img/cart_icon.png" alt="">
-                    <div>
-                        <h3>買い物リスト</h3>
-                        <p>リストを確認</p>
+                <div class="box" onclick="router('shopping')">
+                    <div class="box-content">
+                        <div class="fridge-box">
+                            <img src="../img/cart_icon.png" alt="カートアイコン">
+                            <button class="arrow-btn"></button>
+                        </div>
+                        <div class="menu-title-card">
+                            <h3>買い物リスト</h3>
+                            <p>リストを確認・編集する</p>
+                        </div>
                     </div>
+                    <img src="./img/bg-illust.png" alt="" class="bg-image">
                 </div>
                 <div class="box" style="background:#f0f7f0; border-radius:15px; flex:1; cursor:pointer;" onclick="router('fridge')">
-                <img src = "../img/refrigerator_icon.png" alt="">
-                    <div>
-                        <h3>冷蔵庫メモ</h3>
+                    <div class="box-content">
+                        <div class="fridge-box green">
+                            <img src = "../img/refrigerator_icon.png" alt="冷蔵庫アイコン">
+                            <button class="arrow-btn"></button>
+                        </div>
+                        <div class="menu-title-card">
+                            <h3>冷蔵庫メモ</h3>
                         <p>あるものを確認</p>
+                        </div>
                     </div>
+                    <img src="./img/bg-illust02.png" alt="" class="bg-image02">
                 </div>
             </section>
             ${memoSectionHtml}`;
@@ -219,7 +249,8 @@ const pages = {
                 ${popularRecipes.map(name => generateRecipeCardHtml(name)).join('')}
             </div>`;
 
-        const categories = ["ごはんもの", "麺類", "スープ", "肉・魚料理", "おかず", "サラダ", "パン・ピザ", "デザート", "その他"];
+        const categories = ["ご飯もの", "麺類", "パン・ピザ", "お肉系", "野菜系", "魚系", "スープ", "鍋", "サラダ", "デザート"];
+        
         const categoryTilesHtml = categories.map(cat => {
             const icon = recipeCategoryIcons[cat] || "🍔";
             return `
