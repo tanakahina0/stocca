@@ -1061,7 +1061,7 @@ h1 span {
 /* 各メニューごとのデフォルト画像パス（実際の画像名に合わせて適宜変更してください） */
 .home-icon { background-image: url('../img/home_icon.png'); }
 .recipe-icon { background-image: url('../img/recipe_icon.png'); }
-.shopping-icon { background-image: url('../img/cart_icon.png'); }
+.shopping-icon { background-image: url('../img/cart_icon02.png'); }
 
 /* 🌟 アクティブ（選択中）になった時の画像切り替え設定 */
 .nav-btn.active .home-icon { background-image: url('../img/home_icon_active.png'); }
