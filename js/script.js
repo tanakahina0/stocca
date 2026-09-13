@@ -427,12 +427,12 @@ const pages = {
     menu: () => {
         return `
             <div class="menu-profile-header">
+                <div class="menu-header-text">
+                    <h1>stocca<span>.</span></h1>
+                    <p>買い物を、もっとかんたんに。</p>
+                </div>
                 <div class="menu-avatar">
                     <img src="./img/logo.png" alt="">
-                </div>
-                <div class="menu-header-text">
-                    <h2>stocca.</h2>
-                    <p>買い物を、もっとかんたんに。</p>
                 </div>
             </div>
 
