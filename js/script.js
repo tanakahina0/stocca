@@ -438,7 +438,7 @@ const pages = {
 
             <div class="menu-list-card">
                 <div class="menu-item" onclick="router('fridge')">
-                    <div class="menu-item-left"><img src="../img/refrigerator_icon.png" alt=""><span>冷蔵庫メモ</span></div>
+                    <div class="menu-item-left"><img src="../img/refrigerator_icon02.png" alt=""><span>冷蔵庫メモ</span></div>
                     <div class="menu-item-arrow">＞</div>
                 </div>
                 <div class="menu-item" onclick="showToast('食材カテゴリの管理は準備中です')">
